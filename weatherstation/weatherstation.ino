@@ -46,6 +46,9 @@ String data = "";
 int greenled = 11;
 int redled = 12;
 
+int photocellPin = 0;
+int photocell;
+
 char ssid[] = SECRET_SSID;
 char pass[] = SECRET_PASS;
 int status = WL_IDLE_STATUS;
@@ -99,7 +102,8 @@ void loop() {
   t = dht.readTemperature();
   dew = t - (100-rh)/5;
   float P = getPressure();
-  data = "data=" + String(t)+ "," + String(dew) + "," + String(rh) + "," + String(P);
+  photocell = analogRead(photocellPin);
+  data = "data=" + String(t)+ "," + String(dew) + "," + String(rh) + "," + String(P) + "," + String(photocell);
   Serial.println(data);
 
   Serial.println("");
