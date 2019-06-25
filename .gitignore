@@ -1,3 +1,4 @@
-# ignore database settings
+# ignore database settings and node modules
 settings.php
 weatherstation/secrets.h
+backend/node_modules
