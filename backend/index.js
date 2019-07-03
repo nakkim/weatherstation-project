@@ -13,10 +13,11 @@ app.use(morgan(':method :url content-type: :type, request.body: :request, status
 
 morgan.token('type', function (req, res) { return req.headers['content-type'] })
 morgan.token('request', function (req, res) { return JSON.stringify(req.body) })
-app.use(morgan('common', {
-  stream: fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' }),
-  skip: function (req, res) { return res.statusCode < 400 }
-}))
+
+// app.use(morgan('common', {
+//   stream: fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' }),
+//   skip: function (req, res) { return res.statusCode < 400 }
+// }))
 
 
 const formatValue = (value) => {
