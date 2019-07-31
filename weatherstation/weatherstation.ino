@@ -65,6 +65,7 @@ void setup() {
 
   // attempt to connect to Wifi network:
   while (status != WL_CONNECTED) {
+    digitalWrite(redled, HIGH);
     Serial.print("Attempting to connect to WPA SSID: ");
     Serial.println(ssid);
     status = WiFi.begin(ssid, pass);
@@ -73,6 +74,7 @@ void setup() {
 
   Serial.print("");
   Serial.print("You're connected to the network");
+  digitalWrite(redled, LOW);
   printCurrentNet();
   printWifiData();
 
@@ -94,7 +96,7 @@ void setup() {
 
 void loop() {
 
-  delay(60000);
+  delay(10*60000);
 
   Serial.println("");
   Serial.println("New measurements");
@@ -114,7 +116,7 @@ void loop() {
     digitalWrite(greenled, HIGH);
     Serial.println("Sending data... ");
     
-    client.println("POST /weather-station/add.php HTTP/1.1");
+    client.println("POST /arduino-weatherstation/router.php HTTP/1.1");
     client.println("Host: smartmet.dy.fi");
     client.println("Content-Type: application/x-www-form-urlencoded");
     client.print("Content-Length: ");
@@ -141,6 +143,8 @@ void loop() {
   if (client.available()) {
     char c = client.read();
     Serial.print(c);
+    String line = client.readStringUntil('\r');
+    Serial.println(line);
   }
   
   Serial.println(".......................................");
