@@ -2,13 +2,10 @@
 header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
 header("Content-type: text/html");
 
-require_once "settings.php";
-require_once "ControllerClass.php";
-
 // http://stackoverflow.com/questions/28171434/php-post-arduino
 
-$data = $_REQUEST["data"];
-//$data = "21.90,2.10,1.00,988.11";
+// $data = $_REQUEST["data"];
+$data = "21.90,20.9,2.10,1.00,988.11";
 
 if(!empty($data)){
 
@@ -26,7 +23,7 @@ if(!empty($data)){
     $data_string = json_encode($rdata);
 
     $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, 'https://arduino-weatherstation-backend-dmageepwbu.now.sh/data');
+    curl_setopt($ch, CURLOPT_URL, 'https://arduino-weatherstation.now.sh/data');
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
     curl_setopt($ch, CURLOPT_POST, 1);

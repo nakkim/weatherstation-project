@@ -1,13 +1,6 @@
 /*
-
-  This example connects to an unencrypted Wifi network.
-  Then it prints the  MAC address of the Wifi module,
-  the IP address obtained, and other network details.
-
-  created 13 July 2010
-  by dlf (Metodo2 srl)
-  modified 31 May 2012
-  by Tom Igoe
+  Arduino weather station
+  by Ville Ilkka
 */
 
 #include <SPI.h>
@@ -31,9 +24,7 @@ SFE_BMP180 pressure;
 #include "networkfunctions.h"
 #include "pressure.h"
 
-//const IPAddress server(194,32,77,146);
 byte server[] = { 194,32,77,146 };
-//char server[] = "smartmet.tuulikartta.dy.fi";
 
 // initialize data parameters and data output string
 float t = 0;
@@ -53,6 +44,8 @@ char ssid[] = SECRET_SSID;
 char pass[] = SECRET_PASS;
 int status = WL_IDLE_STATUS;
 
+
+
 void setup() {
 
   pinMode(redled, OUTPUT);
@@ -63,13 +56,22 @@ void setup() {
     ; // wait for serial port to connect.
   }
 
+  // check for the WiFi module:
+  if (WiFi.status() == WL_NO_MODULE) {
+    Serial.println("Communication with WiFi module failed!");
+    // don't continue
+    while (true);
+  }
+
   // attempt to connect to Wifi network:
   while (status != WL_CONNECTED) {
     digitalWrite(redled, HIGH);
     Serial.print("Attempting to connect to WPA SSID: ");
     Serial.println(ssid);
     status = WiFi.begin(ssid, pass);
-    delay(5000);
+    Serial.print("Connection status: ");
+    Serial.println(status);
+    delay(10000);
   }
 
   Serial.print("");
@@ -81,7 +83,7 @@ void setup() {
   // initialize DHT22 sensor
   dht.begin();
 
-  // Initialize the bmp180 prssure sensor.
+  // Initialize the bmp180 pressure sensor.
   Serial.println("");
   Serial.println("Initializing BMP180 sensor... ");
   if (pressure.begin()) {
@@ -94,20 +96,21 @@ void setup() {
 }
 
 
-void loop() {
 
-  delay(10*60000);
+void loop() {
 
   Serial.println("");
   Serial.println("New measurements");
-  rh = dht.readHumidity();
-  t = dht.readTemperature();
+
+  rh  = dht.readHumidity();
+  t   = dht.readTemperature();
   dew = t - (100-rh)/5;
   float P = getPressure();
   photocell = analogRead(photocellPin);
-  data = "data=" + String(t)+ "," + String(dew) + "," + String(rh) + "," + String(P) + "," + String(photocell);
-  Serial.println(data);
 
+  data = "data=" + String(t)+ "," + String(dew) + "," + String(rh) + "," + String(P) + "," + String(photocell);
+ 
+  Serial.println(data);
   Serial.println("");
   
   Serial.println("Connecting HTTP client...");
@@ -148,5 +151,6 @@ void loop() {
   }
   
   Serial.println(".......................................");
+  delay(1000*10);
   
 }
