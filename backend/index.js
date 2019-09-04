@@ -24,6 +24,8 @@ const formatValue = (value) => {
   const formattedValue = { ...value._doc, id: value._id }
   delete formattedValue._id
   delete formattedValue.__v
+  delete formattedValue.updatedAt
+  delete formattedValue.createdAt
 
   return formattedValue
 }
@@ -35,7 +37,7 @@ app.get('/', (req, res) => {
 // list all data
 app.get('/data', (req, res) => {
   Value
-    .find({})
+    .find({}).sort({ time: -1 })
     .then(values => {
       res.json(values.map(formatValue))
     })
@@ -44,17 +46,39 @@ app.get('/data', (req, res) => {
     })
 })
 
-// list data with id value
-app.get('/data/:id', (req, res) => {
+
+// get N latest values
+app.get('/data/latest/:n', (req, res) => {
+  var limit = req.params.n
   Value
-    .findById(req.params.id)
-    .then(value => {
-      res.json(formatValue(value))
-    })
-    .catch(error => {
-      console.log(error)
+    .find({}).sort({ time: -1 }).limit(parseInt(limit))
+    .then(values => {
+      res.json(values.map(formatValue))
     })
 })
+
+// get latest value
+app.get('/data/latest/', (req, res) => {
+  var limit = req.params.n
+  Value
+    .find({}).sort({ time: -1 }).limit(1)
+    .then(values => {
+      res.json(values.map(formatValue))
+    })
+})
+
+// list data with id value
+// app.get('/data/:id', (req, res) => {
+//   Value
+//     .findById(req.params.id)
+//     .then(value => {
+//       res.json(formatValue(value))
+//     })
+//     .catch(error => {
+//       console.log(error)
+//     })
+// })
+
 
 // add data
 app.post('/data', (request,response) => {
