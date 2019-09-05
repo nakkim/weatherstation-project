@@ -1,4 +1,23 @@
-# ignore database settings and node modules
-settings.php
-weatherstation/secrets.h
+# ignore wifi settings and node modules
+arduino/secrets.h
 backend/node_modules
+
+
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+frontend/node_modules
+
+# production
+frontend/build
+
+# misc
+frontend/.DS_Store
+frontend/.env.local
+frontend/.env.development.local
+frontend/.env.test.local
+frontend/.env.production.local
+
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*

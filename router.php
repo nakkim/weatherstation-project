@@ -4,8 +4,8 @@ header("Content-type: text/html");
 
 // http://stackoverflow.com/questions/28171434/php-post-arduino
 
-// $data = $_REQUEST["data"];
-$data = "21.90,20.9,2.10,1.00,988.11";
+$data = $_REQUEST["data"];
+// $data = "21.90,20.9,2.10,1.00,988.11";
 
 if(!empty($data)){
 
