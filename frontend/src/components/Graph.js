@@ -71,7 +71,7 @@ const Graph = ({ data, lang }) => {
     chart: {
       height: '340px',
       animation: false,
-      margin: [30, 60, undefined, undefined]
+      margin: [30, 60, undefined, 80]
     },
 
     credits: {
@@ -140,12 +140,16 @@ const Graph = ({ data, lang }) => {
         title: {
           align: "high",
           textAlign: "right",
+          style: {
+            color: '#2196F3',
+            fontWeight: 'bold'
+          },
           rotation: 0,
           offset: 0,
           margin: 0,
-          y: -6,
-          x: -21,
-          text: '# T'
+          y: -5,
+          x: -16,
+          text: translations[lang].temperature
         },
         labels: {
           align: "left",
@@ -158,39 +162,72 @@ const Graph = ({ data, lang }) => {
         opposite: true,
         title: {
           align: "high",
-          textAlign: "right",
+          textAlign: "left",
+          style: {
+            color: '#4CAF50',
+            fontWeight: 'bold'
+          },
           rotation: 0,
           offset: 0,
           margin: 0,
-          y: 13,
-          x: -65,
-          text: '# RH'
+          y: 12,
+          x: -190,
+          text: translations[lang].humidity
         },
         labels: {
-          align: "left",
+          align: "right",
           y: 12,
-          x: -37,
+          x: -20,
           format: '{value} %'
         }
       },
       {
-        // pressure
-        opposite: true,
+        // light
+        visible: true,
+        tickPosition: "inside",
+        offset: 0,
         title: {
-          enabled: false
+          text: translations[lang].pressure,
+          align: "high",
+          textAlign: "left",
+          style: {
+            color: '#795548',
+            fontWeight: 'bold'
+          },
+          rotation: 0,
+          offset: 0,
+          margin: 0,
+          y: -5,
+          x: -7
         },
         labels: {
-          enabled: false
+          align: "right",
+          y: -5,
+          format: '{value} hPa'
         }
       },
       {
-        // light
-        opposite: true,
+        // pressure
+        visible: true,
+        tickPosition: "inside",
+        offset: 0,
+        type: "linear",
         title: {
-          enabled: false
+          text: translations[lang].light,
+          style: {
+            color: '#BDBDBD',
+            fontWeight: 'bold'
+          },align: "high",
+          textAlign: "left",
+          rotation: 0,
+          offset: 0,
+          margin: 0,
+          y: 12,
+          x: -7
         },
         labels: {
-          enabled: false
+          align: "right",
+          y: 12
         }
       }
     ],
