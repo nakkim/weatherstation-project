@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const baseUrl = 'https://arduino-weatherstation.now.sh/data'
+const baseUrl = '/data'
 
 const getAll = () => {
   const request = axios.get(baseUrl)

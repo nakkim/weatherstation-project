@@ -10,6 +10,7 @@ const Value = require('./models/data')
 app.use(cors())
 app.use(bodyParser.json())
 app.use(morgan(':method :url content-type: :type, request.body: :request, status: :status, content-length: :res[content-length], response time: :response-time ms'))
+app.use(express.static('build'))
 
 morgan.token('type', function (req, res) { return req.headers['content-type'] })
 morgan.token('request', function (req, res) { return JSON.stringify(req.body) })
