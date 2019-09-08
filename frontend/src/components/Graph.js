@@ -12,16 +12,16 @@ var moment = require('moment')
 function formatData(data) {
   var result = {}
   var dataArrayTemperature = []
-  var dataArrayPressure    = []
-  var dataArrayLight       = []
-  var dataArrayHumidity    = []
+  var dataArrayPressure = []
+  var dataArrayLight = []
+  var dataArrayHumidity = []
 
-  for(var i=1; i<data.length; i++) {
-    var temperatureTmp = [data[i]['time']*1000,data[i]['temperature']]
-    var pressureTmp    = [data[i]['time']*1000,data[i]['pressure']]
-    var lightTmp       = [data[i]['time']*1000,data[i]['light']]
-    var humidityTmp    = [data[i]['time']*1000,data[i]['humidity']]
-    
+  for (var i = 1; i < data.length; i++) {
+    var temperatureTmp = [data[i]['time'] * 1000, data[i]['temperature']]
+    var pressureTmp = [data[i]['time'] * 1000, data[i]['pressure']]
+    var lightTmp = [data[i]['time'] * 1000, data[i]['light']]
+    var humidityTmp = [data[i]['time'] * 1000, data[i]['humidity']]
+
     dataArrayTemperature.push(temperatureTmp)
     dataArrayPressure.push(pressureTmp)
     dataArrayLight.push(lightTmp)
@@ -39,17 +39,17 @@ function formatData(data) {
 // calculate running average with N values
 function runningAverage(data, N) {
   var runningAvg = [];
-  if(data != null) { 
-    for (var i=N; i<data.length-N; i++) {
+  if (data != null) {
+    for (var i = N; i < data.length - N; i++) {
       var tmp = []
       var mean = data[i][1]
-      for (var k=1; k<=N; k++) {
-        mean = mean + (data[i+k][1] + data[i-k][1]);
+      for (var k = 1; k <= N; k++) {
+        mean = mean + (data[i + k][1] + data[i - k][1]);
       }
 
-      mean = mean/(N*2+1)
+      mean = mean / (N * 2 + 1)
       var n = Math.round(mean * 10) / 10
-      runningAvg.push([data[i][0],n]);
+      runningAvg.push([data[i][0], n]);
     }
     return runningAvg
   } else {
@@ -57,12 +57,12 @@ function runningAverage(data, N) {
   }
 }
 
-const Graph = ({data, lang}) => {
+const Graph = ({ data, lang }) => {
 
-  if(data == null || data.length < 1) {
+  if (data == null || data.length < 1) {
     return false
   }
-  
+
   const options = {
     colors: ['#2196F3', '#4CAF50', '#795548', '#BDBDBD'],
 
@@ -71,7 +71,7 @@ const Graph = ({data, lang}) => {
     chart: {
       height: '340px',
       animation: false,
-      margin: [30, 80, undefined, undefined]
+      margin: [30, 60, undefined, undefined]
     },
 
     credits: {
@@ -87,7 +87,7 @@ const Graph = ({data, lang}) => {
     series: [
       {
         type: 'line',
-        data: runningAverage(formatData(data).temperature,20),
+        data: runningAverage(formatData(data).temperature, 20),
         name: translations[lang].temperature,
         yAxis: 0,
         tooltip: {
@@ -97,7 +97,7 @@ const Graph = ({data, lang}) => {
       },
       {
         type: 'line',
-        data: runningAverage(formatData(data).humidity,20),
+        data: runningAverage(formatData(data).humidity, 20),
         name: translations[lang].humidity,
         yAxis: 1,
         tooltip: {
@@ -107,7 +107,7 @@ const Graph = ({data, lang}) => {
       },
       {
         type: 'line',
-        data: runningAverage(formatData(data).pressure,20),
+        data: runningAverage(formatData(data).pressure, 20),
         name: translations[lang].pressure,
         yAxis: 2,
         tooltip: {
@@ -117,7 +117,7 @@ const Graph = ({data, lang}) => {
       },
       {
         type: 'line',
-        data: runningAverage(formatData(data).light,100),
+        data: runningAverage(formatData(data).light, 100),
         name: translations[lang].light,
         yAxis: 3,
         tooltip: {
@@ -169,7 +169,7 @@ const Graph = ({data, lang}) => {
         labels: {
           align: "left",
           y: 12,
-          x: -40,
+          x: -37,
           format: '{value} %'
         }
       },
@@ -181,7 +181,7 @@ const Graph = ({data, lang}) => {
         },
         labels: {
           enabled: false
-        } 
+        }
       },
       {
         // light
@@ -191,7 +191,7 @@ const Graph = ({data, lang}) => {
         },
         labels: {
           enabled: false
-        } 
+        }
       }
     ],
     lang: {
@@ -199,14 +199,14 @@ const Graph = ({data, lang}) => {
     },
     noData: {
       style: {
-          fontWeight: 'bold',
-          fontSize: '15px',
-          color: '#303030'
+        fontWeight: 'bold',
+        fontSize: '15px',
+        color: '#303030'
       }
     }
   }
 
-  return(
+  return (
     <div id="graph">
       <HighchartsReact
         highcharts={Highcharts}
