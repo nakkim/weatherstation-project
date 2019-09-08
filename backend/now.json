@@ -1,4 +1,5 @@
 {
-	"name": "arduino-weatherstation-backend",
-	"version": 1
+		"name": "arduino-weatherstation-backend",
+		"version": 1,
+		"alias": "arduino-weatherstation.now.sh"
 }
