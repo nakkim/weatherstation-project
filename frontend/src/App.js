@@ -70,8 +70,8 @@ class App extends React.Component {
           </div>
         </div>
         <div className="info-content">
-          <div className="info-content bold">Arduino WiFi2</div>
-          <div className="info-content light">React, MongoDB, Javascript, PHP, C/C++</div>
+          <div className="info-content bold">Raspberry Pi 2</div>
+          <div className="info-content light">Python, React, MongoDB, Javascript, PHP, C/C++</div>
         </div>
   
         <footer>&reg; 2019- Ville Ilkka</footer>

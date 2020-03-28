@@ -1,6 +1,6 @@
 var translations = {
   'en': {
-    'title': 'Arduino Weatherstation',
+    'title': 'Raspberry Weatherstation',
     'latest': 'Latest observations',
     'measured': 'measured',
     'loading': 'Loading observations...',
@@ -12,7 +12,7 @@ var translations = {
   },
 
   'fi': {
-    'title': 'Arduino Sääasema',
+    'title': 'Vadelmasääasema',
     'latest': 'Viimeisimmät havainnot',
     'measured': 'mitattu',
     'loading': 'Ladataan havaintoja...',
