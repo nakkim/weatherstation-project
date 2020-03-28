@@ -11,6 +11,7 @@ class App extends React.Component {
     this.state = {
       data: [],
       lang: localStorage.getItem('lang') ? localStorage.getItem('lang') : 'fi',
+      avg: localStorage.getItem('useAvg') ? localStorage.getItem('useAvg') : true,
       message: 'Ladataan havaintoja...'
     }
   }
@@ -39,6 +40,16 @@ class App extends React.Component {
       })
   }
 
+  toggleAvg = (event) => {
+    if(this.state.avg === true || this.state.avg === 'true') {
+      this.setState({avg: false})
+      localStorage.setItem('useAvg', false)
+    } else {
+      this.setState({avg: true})
+      localStorage.setItem('useAvg', true)
+    }
+  }
+
   changeLanguage = (event) => {
     if(this.state.lang === 'fi') {
       this.setState({lang: 'en'})
@@ -51,6 +62,11 @@ class App extends React.Component {
 
   render() {
     const obs = this.state.data[0]
+    let checked = this.state.avg
+    if(checked === 'true')
+    checked = true
+    if(checked === 'false')
+    checked = false
 
     return (
       <div className="App">
@@ -63,10 +79,12 @@ class App extends React.Component {
           </span>
         </header>
         <Latest obs={obs} lang={this.state.lang} message={this.state.message} />
-  
+
+        <label><input type="checkbox" checked={checked} onChange={this.toggleAvg}/>{translations[this.state.lang].useAvg}</label>
+        
         <div className="main-content">
           <div className="graph-container" id="graph-container">
-            <Graph data={this.state.data} lang={this.state.lang} />
+            <Graph data={this.state.data} lang={this.state.lang} avg={this.state.avg} />
           </div>
         </div>
         <div className="info-content">

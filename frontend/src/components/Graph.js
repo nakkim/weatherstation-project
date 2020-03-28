@@ -1,12 +1,13 @@
 import React from 'react'
-import { render } from 'react-dom'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import addNoDataModule from 'highcharts/modules/no-data-to-display';
+import patternFillModule from 'highcharts/modules/pattern-fill';
 import translations from '../translations'
+var SunCalc = require('suncalc');
 
 addNoDataModule(Highcharts)
-var moment = require('moment')
+patternFillModule(Highcharts)
 
 // convert data series to an array
 function formatData(data) {
@@ -36,8 +37,74 @@ function formatData(data) {
   return result
 }
 
+function resolvePlotbands(data) {
+  var reversed = data.reverse()
+  var days = [],
+      dayTimes = [],
+      result = [],
+      tmp = {}
+  var day, month, year, dayString
+  for(var i=0; i<reversed.length; i++) {
+    day = (new Date(reversed[i].time*1000)).getDate()
+    month = (new Date(reversed[i].time*1000)).getMonth()+1
+    year = (new Date(reversed[i].time*1000)).getFullYear()
+
+    if(month < 10) month = '0'+month
+    dayString = year+'-'+month+'-'+day
+
+    if(!days.includes(dayString)) {
+      days.push(dayString)
+    }
+  }
+
+  for(var k=0; k<days.length; k++) {
+    dayTimes.push([SunCalc.getTimes(new Date(days[k]), 60, 24).dawn.getTime(),SunCalc.getTimes(new Date(days[k]), 60, 24).dusk.getTime()])
+  }
+
+  if(dayTimes.length<2) {
+    tmp = {
+      from: data[0].time*1000,
+      to: dayTimes[0][0],
+      color: 'rgba(186, 213, 255, 0.2)'
+    }
+    result.push(tmp)
+  } else {
+    for(var j=1; j<dayTimes.length; j++) {
+      tmp = {
+        from: dayTimes[j-1][1],
+        to: dayTimes[j][0],
+        color: 'rgba(186, 213, 255, 0.2)'
+      }
+      result.push(tmp)
+    }
+  }
+  return result
+}
+
+// function resolveLightValues(data) {
+//   var result = []
+//   var mean = []
+//   for(var i=1; i<data.length; i++) {
+//     if((new Date(data[i-1][0])).getMinutes() % 5 === 0 && (new Date(data[i][0])).getMinutes() % 5 !== 0) {
+//       // calculate mean value and push it to result array
+//       mean.push(data[i][1])
+//       result.push([data[i][0],
+//         mean.reduce((previous, current) => current += previous) / mean.length])
+//       mean = []
+//     } else {
+//       mean.push(data[i][1])
+//     }  
+//   }
+//   return result
+// }
+
 // calculate running average with N values
 function runningAverage(data, N) {
+
+  if(N < 1) {
+    return data
+  }
+
   var runningAvg = [];
   if (data != null) {
     for (var i = N; i < data.length - N; i++) {
@@ -57,21 +124,32 @@ function runningAverage(data, N) {
   }
 }
 
-const Graph = ({ data, lang }) => {
+const Graph = ({ data, lang, avg }) => {
 
   if (data == null || data.length < 1) {
     return false
   }
 
+  // var plotBands = resolvePlotbands(data)
+
+  let sample = 0
+  if(avg === true || avg === 'true')
+  sample = 5
+
   const options = {
-    colors: ['#2196F3', '#4CAF50', '#795548', '#BDBDBD'],
+    colors: ['#BDBDBD', '#2196F3', '#4CAF50', '#795548'],
 
     title: null,
+
+    time: {
+      useUTC: false
+    },
 
     chart: {
       height: '340px',
       animation: false,
-      margin: [30, 60, undefined, 80]
+      margin: [30, 60, undefined, 80],
+      backgroundColor: '#FFFFFF'
     },
 
     credits: {
@@ -80,14 +158,46 @@ const Graph = ({ data, lang }) => {
 
     tooltip: {
       shared: true,
-      split: false,
+      split: true,
       enabled: true
+    },
+
+    plotOptions: {
+      area: {
+        fillColor: {
+          pattern: {
+            path: {
+              d: 'M 0 0 L 10 10 M 9 -1 L 11 1 M -1 9 L 1 11',
+              strokeWidth: 3
+            },
+            width: 10,
+            height: 10,
+            opacity: 0.4
+          }
+        }
+      }
     },
 
     series: [
       {
-        type: 'line',
-        data: runningAverage(formatData(data).temperature, 20),
+        type: 'area',
+        data: runningAverage(formatData(data).light, sample),
+        name: translations[lang].light,
+        color: '',
+        yAxis: 3,
+        tooltip: {
+          valueSuffix: ''
+        },
+        zIndex: 1,
+        fillColor: {
+          pattern: {
+            color: '#DBDBDB'
+          }
+        }
+      },
+      {
+        type: 'spline',
+        data: runningAverage(formatData(data).temperature, sample),
         name: translations[lang].temperature,
         yAxis: 0,
         tooltip: {
@@ -97,7 +207,7 @@ const Graph = ({ data, lang }) => {
       },
       {
         type: 'line',
-        data: runningAverage(formatData(data).humidity, 20),
+        data: runningAverage(formatData(data).humidity, sample),
         name: translations[lang].humidity,
         yAxis: 1,
         tooltip: {
@@ -107,37 +217,31 @@ const Graph = ({ data, lang }) => {
       },
       {
         type: 'line',
-        data: runningAverage(formatData(data).pressure, 20),
+        data: runningAverage(formatData(data).pressure, sample),
         name: translations[lang].pressure,
         yAxis: 2,
         tooltip: {
           valueSuffix: ' hPa'
         },
         zIndex: 2
-      },
-      {
-        type: 'line',
-        data: runningAverage(formatData(data).light, 100),
-        name: translations[lang].light,
-        yAxis: 3,
-        tooltip: {
-          valueSuffix: ''
-        },
-        zIndex: 1
-      }
+      }   
     ],
 
     xAxis: [{
       type: 'datetime',
-      minorTicks: true
+      minorTicks: true,
+      // plotBands: plotBands,
     }],
 
     yAxis: [
+      // temperature
       {
-        // https://stackoverflow.com/questions/40266621/highcharts-y-axis-horizontal-title
-        // temperature
+        visible: true,
         opposite: true,
+        tickPosition: "inside",
+        offset: 0,
         title: {
+          text: translations[lang].temperature,
           align: "high",
           textAlign: "right",
           style: {
@@ -148,41 +252,45 @@ const Graph = ({ data, lang }) => {
           offset: 0,
           margin: 0,
           y: -5,
-          x: -16,
-          text: translations[lang].temperature
+          x: 0
         },
         labels: {
-          align: "left",
-          y: -6,
+          align: "right",
+          y: -5,
+          x: 50,
           format: '{value} °C'
         }
       },
+      // humidity
       {
-        // relative humidity
+        visible: true,
         opposite: true,
+        tickPosition: "inside",
+        offset: 0,
+        type: "linear",
         title: {
-          align: "high",
-          textAlign: "left",
+          text: translations[lang].humidity,
           style: {
             color: '#4CAF50',
             fontWeight: 'bold'
           },
+          align: "high",
+          textAlign: "right",
           rotation: 0,
           offset: 0,
           margin: 0,
           y: 12,
-          x: -190,
-          text: translations[lang].humidity
+          x: 0
         },
         labels: {
           align: "right",
           y: 12,
-          x: -20,
+          x: 50,
           format: '{value} %'
         }
       },
+      // light
       {
-        // light
         visible: true,
         tickPosition: "inside",
         offset: 0,
@@ -198,7 +306,7 @@ const Graph = ({ data, lang }) => {
           offset: 0,
           margin: 0,
           y: -5,
-          x: -7
+          x: 0
         },
         labels: {
           align: "right",
@@ -206,8 +314,8 @@ const Graph = ({ data, lang }) => {
           format: '{value} hPa'
         }
       },
+      // pressure
       {
-        // pressure
         visible: true,
         tickPosition: "inside",
         offset: 0,
@@ -223,7 +331,7 @@ const Graph = ({ data, lang }) => {
           offset: 0,
           margin: 0,
           y: 12,
-          x: -7
+          x: 0
         },
         labels: {
           align: "right",
@@ -231,9 +339,11 @@ const Graph = ({ data, lang }) => {
         }
       }
     ],
+
     lang: {
       noData: translations[lang].noData
     },
+
     noData: {
       style: {
         fontWeight: 'bold',

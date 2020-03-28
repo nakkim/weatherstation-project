@@ -8,7 +8,8 @@ var translations = {
     'light': 'Amount of light',
     'humidity': 'Relative humidity',
     'pressure': 'Air pressure',
-    'noData': 'No data to display'
+    'noData': 'No data to display',
+    'useAvg': 'Use running average in graph'
   },
 
   'fi': {
@@ -20,7 +21,8 @@ var translations = {
     'light': 'Valon määrä',
     'humidity': 'Suhteellinen kosteus',
     'pressure': 'Ilmanpaine',
-    'noData': 'Havaintoja ei löytynyt'
+    'noData': 'Havaintoja ei löytynyt',
+    'useAvg': 'Käytä juoksevaa keskiarvoa kuvaajassa'
   }
 }
 
