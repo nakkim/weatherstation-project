@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
+const dotenv = require('dotenv').config();
 
-// const url = 'mongodb://handler:arduino1@ds157707.mlab.com:57707/weatherobs'
-const url = 'mongodb+srv://handler:arduino@cluster0-tmh36.mongodb.net/test?retryWrites=true&w=majority'
+const url = process.env.DB_URL
 
 mongoose.connect(url, { useNewUrlParser: true, useCreateIndex: true })
 
