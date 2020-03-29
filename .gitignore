@@ -2,8 +2,10 @@
 arduino/secrets.h
 backend/node_modules
 
-
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# backend secets
+backend/.env
 
 # dependencies
 frontend/node_modules
