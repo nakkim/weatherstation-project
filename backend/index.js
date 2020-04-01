@@ -37,14 +37,24 @@ app.get('/', (req, res) => {
 
 // list all data
 app.get('/data', (req, res) => {
-  Value
-    .find({}).sort({ time: -1 })
-    .then(values => {
-      res.json(values.map(formatValue))
-    })
-    .catch(error => {
-      console.log(error)
-    })
+  if(req.query.format === 'raw')
+    Value
+      .find({}).sort({ time: -1 })
+      .then(values => {
+        res.json(values)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  else
+    Value
+      .find({}).sort({ time: -1 })
+      .then(values => {
+        res.json(values.map(formatValue))
+      })
+      .catch(error => {
+        console.log(error)
+      })
 })
 
 
