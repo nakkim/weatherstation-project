@@ -20,7 +20,6 @@ morgan.token('request', function (req, res) { return JSON.stringify(req.body) })
 //   skip: function (req, res) { return res.statusCode < 400 }
 // }))
 
-
 const formatValue = (value) => {
   const formattedValue = { ...value._doc, id: value._id }
   delete formattedValue._id
@@ -32,29 +31,22 @@ const formatValue = (value) => {
 }
 
 app.get('/', (req, res) => {
-  res.send('Arduino Weather Station')
+  res.send('Raspberry Pi Weather Station')
 })
 
 // list all data
 app.get('/data', (req, res) => {
-  if(req.query.format === 'raw')
-    Value
-      .find({}).sort({ time: -1 })
-      .then(values => {
-        res.json(values)
-      })
-      .catch(error => {
-        console.log(error)
-      })
-  else
-    Value
-      .find({}).sort({ time: -1 })
-      .then(values => {
-        res.json(values.map(formatValue))
-      })
-      .catch(error => {
-        console.log(error)
-      })
+  Value
+    .find({}).sort({ time: -1 })
+    .then(values => {
+      if(req.query.format === 'raw')
+      res.json(values)
+      else
+      res.json(values.map(formatValue))
+    })
+    .catch(error => {
+      console.log(error)
+    })
 })
 
 
@@ -64,6 +56,9 @@ app.get('/data/latest/:n', (req, res) => {
   Value
     .find({}).sort({ time: -1 }).limit(parseInt(limit))
     .then(values => {
+      if(req.query.format === 'raw')
+      res.json(values)
+      else
       res.json(values.map(formatValue))
     })
 })
@@ -74,6 +69,9 @@ app.get('/data/latest/', (req, res) => {
   Value
     .find({}).sort({ time: -1 }).limit(1)
     .then(values => {
+      if(req.query.format === 'raw')
+      res.json(values)
+      else
       res.json(values.map(formatValue))
     })
 })
