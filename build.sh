@@ -2,12 +2,12 @@
 
 echo "Create frontend production build"
 cd frontend/
-sudo npm run build
+npm run build
 
 echo "Copy build to backend"
-sudo rm -rf ../backend/build
-sudo cp -r build/ -r ../backend
+rm -rf ../backend/build
+cp -r build/ -r ../backend
 
 echo "Run now"
 cd ../backend
-now
+now -e db_url=@db_url
