@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const dotenv = require('dotenv').config();
 
-const url = process.env.DB_URL
+const url = process.env.db_url
 
 mongoose.connect(url, { useNewUrlParser: true, useCreateIndex: true })
 
@@ -12,7 +12,7 @@ const schema = new mongoose.Schema({
   pressure: Number,
   light: Number,
   timeString: String,
-  createdAt: { type: Date, expires: 8640000}
+  createdAt: { type: Date, expires: 21600}
 }, {timestamps: true});
 
 const Value = mongoose.model('Value', schema)
