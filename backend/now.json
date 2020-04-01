@@ -1,5 +1,11 @@
 {
 		"name": "arduino-weatherstation-backend",
 		"version": 1,
-		"alias": "arduino-weatherstation.now.sh"
+    "alias": "raspb-weatherstation.now.sh",
+    "build": {
+      "env": {
+        "db_url": "@db_url",
+        "test_variable": "@test_variable"
+      }
+    }
 }
