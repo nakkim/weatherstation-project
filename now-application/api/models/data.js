@@ -12,7 +12,7 @@ const schema = new mongoose.Schema({
   pressure: Number,
   light: Number,
   timeString: String,
-  createdAt: { type: Date, expires: 21600}
+  createdAt: { type: Date, expires: 86400}
 }, {timestamps: true});
 
 const Value = mongoose.model('Value', schema)
