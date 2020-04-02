@@ -1,9 +1,0 @@
-POST http://localhost:3001/data
-content-type: application/json
-
-{
-  "temperature": 20.1,
-  "humidity": 72.1,
-  "pressure": 1013.15,
-  "light": 50
-}
