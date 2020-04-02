@@ -30,12 +30,12 @@ const formatValue = (value) => {
   return formattedValue
 }
 
-app.get('/', (req, res) => {
+app.get('/api', (req, res) => {
   res.send('Raspberry Pi Weather Station')
 })
 
 // list all data
-app.get('/data', (req, res) => {
+app.get('/api/data', (req, res) => {
   Value
     .find({}).sort({ time: -1 })
     .then(values => {
@@ -51,7 +51,7 @@ app.get('/data', (req, res) => {
 
 
 // get N latest values
-app.get('/data/latest/:n', (req, res) => {
+app.get('/api/data/latest/:n', (req, res) => {
   var limit = req.params.n
   Value
     .find({}).sort({ time: -1 }).limit(parseInt(limit))
@@ -64,7 +64,7 @@ app.get('/data/latest/:n', (req, res) => {
 })
 
 // get latest value
-app.get('/data/latest/', (req, res) => {
+app.get('/api/data/latest/', (req, res) => {
   var limit = req.params.n
   Value
     .find({}).sort({ time: -1 }).limit(1)
@@ -90,7 +90,7 @@ app.get('/data/latest/', (req, res) => {
 
 
 // add data
-app.post('/data', (request,response) => {
+app.post('/api/data', (request,response) => {
 
   const value = new Value({
     temperature: request.body.temperature,
@@ -113,7 +113,7 @@ app.post('/data', (request,response) => {
 })
 
 // delete data with id
-app.delete('/data/:id', (req, res) => {
+app.delete('/api/data/:id', (req, res) => {
   Value
     .findByIdAndRemove(req.params.id)
     .then(result => {
