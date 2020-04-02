@@ -1,14 +1,14 @@
 # ignore wifi settings and node modules
 arduino/secrets.h
-now-application/api/node_modules
-
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # now-application/api secets
 now-application/api/.env
 
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
 # dependencies
 now-application/node_modules
+now-application/api/node_modules
 
 # production
 now-application/build
