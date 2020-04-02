@@ -1,0 +1,19 @@
+{
+		"version": 2,
+    "alias": "raspb-weatherstation.now.sh",
+    "build": {
+      "env": {
+        "db_url": "@db_url",
+        "test_variable": "@test_variable"
+      }
+    },
+    "public": false,
+    "builds": [
+      { "src": "index.js", "use": "@now/node" }
+    ],
+    "routes": [
+      { "src": "/.*", "dest": "/index.js" },
+      { "src": "^/static/(.*)", "dest": "/static/$1" },
+      { "src": "/build/.*", "dest": "/build/index.html" }
+    ]
+}

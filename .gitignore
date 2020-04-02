@@ -1,31 +1,31 @@
 # ignore wifi settings and node modules
 arduino/secrets.h
-backend/node_modules
+now-application/api/node_modules
 
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# backend secets
-backend/.env
+# now-application/api secets
+now-application/api/.env
 
 # dependencies
-frontend/node_modules
+now-application/node_modules
 
 # production
-frontend/build
-backend/build
+now-application/build
+now-application/api/build
 
 # misc
-frontend/.DS_Store
-frontend/.env.local
-frontend/.env.development.local
-frontend/.env.test.local
-frontend/.env.production.local
+now-application/.DS_Store
+now-application/.env.local
+now-application/.env.development.local
+now-application/.env.test.local
+now-application/.env.production.local
 
-frontend/npm-debug.log*
-frontend/yarn-debug.log*
-frontend/yarn-error.log*
+now-application/npm-debug.log*
+now-application/yarn-debug.log*
+now-application/yarn-error.log*
 
 # python stuff
 python/__pycache__/
 python/log*
-.now
+now-application/.now
