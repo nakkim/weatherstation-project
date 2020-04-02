@@ -30,8 +30,12 @@ const formatValue = (value) => {
   return formattedValue
 }
 
-app.get('/api', (req, res) => {
+app.get('/', (req, res) => {
   res.send('Raspberry Pi Weather Station')
+})
+
+app.get('/api', (req, res) => {
+  res.send('Raspberry Pi Weather Station data API')
 })
 
 // list all data
