@@ -258,7 +258,11 @@ const Graph = ({ data, lang, avg }) => {
           align: "right",
           y: -5,
           x: 50,
-          format: '{value} °C'
+          format: '{value} °C',
+          style: {
+            color: '#2196F3',
+            fontWeight: 'bold'
+          }
         }
       },
       // humidity
@@ -286,7 +290,11 @@ const Graph = ({ data, lang, avg }) => {
           align: "right",
           y: 12,
           x: 50,
-          format: '{value} %'
+          format: '{value} %',
+          style: {
+            color: '#4CAF50',
+            fontWeight: 'bold'
+          }
         }
       },
       // light
@@ -311,7 +319,11 @@ const Graph = ({ data, lang, avg }) => {
         labels: {
           align: "right",
           y: -5,
-          format: '{value} hPa'
+          format: '{value} hPa',
+          style: {
+            color: '#795548',
+            fontWeight: 'bold'
+          }
         }
       },
       // pressure
@@ -325,7 +337,8 @@ const Graph = ({ data, lang, avg }) => {
           style: {
             color: '#BDBDBD',
             fontWeight: 'bold'
-          },align: "high",
+          },
+          align: "high",
           textAlign: "left",
           rotation: 0,
           offset: 0,
@@ -335,7 +348,11 @@ const Graph = ({ data, lang, avg }) => {
         },
         labels: {
           align: "right",
-          y: 12
+          y: 12,
+          style: {
+            color: '#BDBDBD',
+            fontWeight: 'bold'
+          }
         }
       }
     ],
