@@ -19,7 +19,7 @@ class App extends React.Component {
   componentDidMount() {
     this.setState({ message: translations[this.state.lang].loading })
     this.getData();
-    this.interval = setInterval(this.getData, 10000);
+    this.interval = setInterval(this.getData, 30000);
   }
 
   componentWillUnmount() {
