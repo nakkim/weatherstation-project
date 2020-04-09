@@ -27,4 +27,4 @@ now-application/yarn-error.log*
 # python stuff
 python/__pycache__/
 python/log*
-now-application/.now
+.now
