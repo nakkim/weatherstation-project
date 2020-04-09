@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "env": {
+    "db_url": "@db_url",
+    "test_variable": "@test_variable"
+  },
+  "public": false,
+  "builds": [
+    { "src": "now-application/package.json", "use": "@now/static-build" },
+    { "src": "now-application/api/index.js", "use": "@now/node-server" }
+  ],
+  "routes": [
+    { "src": "now-application/api/.*", "dest": "/api/index.js" },
+    { "src": "^/static/(.*)", "dest": "/static/$1" },
+    { "src": "now-application/*", "dest": "/index.html" }
+  ]
+}
